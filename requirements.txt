@@ -2,3 +2,4 @@ opencv-python
 ultralytics
 flask
 redis
+flask-cors
