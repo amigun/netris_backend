@@ -1,3 +1,4 @@
+import os
 import time
 
 import cv2
@@ -22,10 +23,15 @@ def write2json(filename, cls_new: list[str]):
 
     for cl in classes:
         if cls_new.count(cl) > cls_old.count(cl):
-            print('new')
             for i in range(cls_new.count(cl) - cls_old.count(cl)):
-                with open(f'uploads/{filename}.json', 'r') as f:
-                    json_file = json.load(f)
+                if os.path.exists(f'uploads/{filename}.json'):
+                    with open(f'uploads/{filename}.json', 'r') as f:
+                        json_file = json.load(f)
+                else:
+                    with open(f'uploads/{filename}.json', 'w') as f:
+                        f.write('[]')
+                    with open(f'uploads/{filename}.json', 'r') as f:
+                        json_file = json.load(f)
 
                 json_file.append(
                     {
@@ -40,10 +46,15 @@ def write2json(filename, cls_new: list[str]):
                     json.dump(json_file, f, indent=4)
 
         elif cls_new.count(cl) < cls_old.count(cl):
-            print('minus')
             for i in range(cls_old.count(cl) - cls_new.count(cl)):
-                with open(f'uploads/{filename}.json', 'r') as f:
-                    json_file = json.load(f)
+                if os.path.exists(f'uploads/{filename}.json'):
+                    with open(f'uploads/{filename}.json', 'r') as f:
+                        json_file = json.load(f)
+                else:
+                    with open(f'uploads/{filename}.json', 'w') as f:
+                        f.write('[]')
+                    with open(f'uploads/{filename}.json', 'r') as f:
+                        json_file = json.load(f)
 
                 for event in json_file:
                     if event.get('class') == cl and event.get('timestamp_end') == '':
